@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDinas\ComplaintController as AdminDinasComplaintCo
 use App\Http\Controllers\AdminDinas\ReportController;
 use App\Http\Controllers\AgenController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategorySuperController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ProfileController;
@@ -100,6 +101,11 @@ Route::middleware(['auth', 'role:superadmin,admin_dinas'])->group(function () {
         Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
         Route::put('/update', [ProfileController::class, 'update'])->name('update');
         Route::put('/change-password', [ProfileController::class, 'changePassword'])->name('change-password');
+    });
+    Route::middleware(['role:admin_dinas,superadmin'])->prefix('admin')->name('admin.')->group(function () {
+        // ... routes lainnya
+        Route::resource('admin/categories', CategorySuperController::class);
+        Route::get('admin/sub-categories/{mainCategory}', [CategorySuperController::class, 'getSubCategories'])->name('sub-categories.get');
     });
 });
 

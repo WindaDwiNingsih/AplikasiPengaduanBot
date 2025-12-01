@@ -317,15 +317,26 @@ class ComplaintController extends Controller
                 'status_notes' => 'nullable|string|max:500'
             ]);
 
-            // CEK PERUBAHAN SEBELUM UPDATE
-            $oldStatus = $complaint->status;
+            // CEK PERUBAHAN SEBELUM UPDATE - AMBIL DATA ASLI DARI DATABASE
+            $originalComplaint = Complaint::find($complaint->id); // Ambil data fresh dari database
+            $oldStatus = $originalComplaint->status;
             $newStatus = $validated['status'];
-            $oldSubCategory = $complaint->category; // dari kolom category di complaints
+            $oldSubCategory = $originalComplaint->category;
             $newSubCategory = $validated['sub_category'];
+
+            Log::info('Before update check', [
+                'complaint_id' => $complaint->id,
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'old_sub_category' => $oldSubCategory,
+                'new_sub_category' => $newSubCategory,
+                'status_changed' => $oldStatus !== $newStatus,
+                'sub_category_changed' => $oldSubCategory !== $newSubCategory
+            ]);
 
             // PREPARE DATA UPDATE
             $updateData = [
-                'category' => $validated['sub_category'], // simpan di kolom category
+                'category' => $validated['sub_category'],
                 'status' => $validated['status'],
                 'status_notes' => $validated['status_notes'] ?? null
             ];
@@ -334,24 +345,19 @@ class ComplaintController extends Controller
             $agencyCategory = AgencyCategory::where('name', $newSubCategory)->first();
 
             if ($agencyCategory) {
-                // Update main_category berdasarkan sub kategori yang dipilih
                 $updateData['main_category'] = $agencyCategory->main_category;
-
-                // ⭐ PENTING: Agency_id OTOMATIS mengikuti agency dari kategori yang dipilih
-                // Jadi laporan akan otomatis pindah ke dinas yang membuat kategori tersebut
                 $updateData['agency_id'] = $agencyCategory->agency_id;
                 $updateData['agency_sub_category_id'] = $agencyCategory->id;
 
                 Log::info('Category changed - auto reassign to agency', [
                     'complaint_id' => $complaint->id,
-                    'old_agency' => $complaint->agency_id,
+                    'old_agency' => $originalComplaint->agency_id,
                     'new_agency' => $agencyCategory->agency_id,
                     'sub_category' => $newSubCategory,
                     'main_category' => $agencyCategory->main_category
                 ]);
             } else {
-                // Jika tidak ditemukan sub kategori, tetap gunakan agency lama
-                $updateData['agency_id'] = $complaint->agency_id;
+                $updateData['agency_id'] = $originalComplaint->agency_id;
                 Log::warning('Sub category not found in agency_categories', [
                     'sub_category' => $newSubCategory,
                     'complaint_id' => $complaint->id
@@ -361,36 +367,55 @@ class ComplaintController extends Controller
             // SIMPAN PERUBAHAN
             $complaint->update($updateData);
 
-            // BUAT HISTORY JIKA ADA PERUBAHAN
+            // BUAT HISTORY JIKA ADA PERUBAHAN STATUS
             $historyNotes = [];
 
             if ($oldStatus !== $newStatus) {
                 $statusLabels = [
-                    'pending' => 'Pending',
-                    'process' => 'Proses',
+                    'pending' => 'Menunggu',
+                    'process' => 'Diproses',
                     'resolved' => 'Selesai',
                     'rejected' => 'Ditolak'
                 ];
 
                 $historyNotes[] = "Status berubah dari {$statusLabels[$oldStatus]} ke {$statusLabels[$newStatus]}";
-            }
 
-           
-
-            if ($request->status_notes) {
-                $historyNotes[] = $request->status_notes;
-            }
-
-            // Simpan history jika ada perubahan
-            if (!empty($historyNotes)) {
+                // BUAT HISTORY RECORD UNTUK PERUBAHAN STATUS
                 ComplaintHistory::create([
                     'complaint_id' => $complaint->id,
                     'user_id' => $user->id,
-                    'action' => 'update',
-                    'description' => implode(', ', $historyNotes),
-                    'created_at' => now()
+                    'old_status' => $oldStatus,
+                    'new_status' => $newStatus,
+                    'notes' => "Status updated: {$statusLabels[$oldStatus]} → {$statusLabels[$newStatus]}",
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+
+                Log::info('Status history created', [
+                    'complaint_id' => $complaint->id,
+                    'old_status' => $oldStatus,
+                    'new_status' => $newStatus
                 ]);
             }
+
+
+            // HISTORY UNTUK CATATAN STATUS
+            if (!empty($validated['status_notes'])) {
+                ComplaintHistory::create([
+                    'complaint_id' => $complaint->id,
+                    'user_id' => $user->id,
+                    'notes' => "Catatan: " . $validated['status_notes'],
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+
+            // LOG FINAL RESULT
+            Log::info('Update completed', [
+                'complaint_id' => $complaint->id,
+                'histories_created' => !empty($historyNotes),
+                'total_notes' => count($historyNotes)
+            ]);
 
             return redirect()->route('reports.all')
                 ->with('success', 'Laporan berhasil diperbarui.');

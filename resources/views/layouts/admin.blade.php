@@ -50,6 +50,11 @@
                              <a href="{{ route('reports.users') }}" class="block py-2 px-4 text-sm rounded transition duration-200 hover:bg-gray-600 {{ request()->routeIs('reports.users') ? 'bg-gray-600' : '' }}">
                                 Daftar Pelapor
                             </a>
+                            </a>
+                            <!-- Link 3: Laporan User Pelapor (Index) -->
+                             <a href="{{ route('admin.categories.index') }}" class="block py-2 px-4 text-sm rounded transition duration-200 hover:bg-gray-600 {{ request()->routeIs('reports.users') ? 'bg-gray-600' : '' }}">
+                                Kategori
+                            </a>
                         </div>
                     </div>
 

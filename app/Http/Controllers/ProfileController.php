@@ -36,7 +36,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return back()->with('status', 'password-updated');
     }
     public function updatePassword(Request $request): RedirectResponse
     {
@@ -54,7 +54,7 @@ class ProfileController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return Redirect::route('profile.edit')->with('status', 'password-updated');
+        return back()->with('status', 'password-updated');
     }
 
     /**

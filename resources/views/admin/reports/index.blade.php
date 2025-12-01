@@ -22,19 +22,37 @@
         </div>
     </div>
 </div>
+
+    <!-- Success Message dengan Tombol Close -->
     @if(session('success'))
-        <div class="alert alert-success mb-4 p-4 rounded-lg bg-green-50 border border-green-200">
-            <div class="flex items-center">
-                <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
-                <span class="text-green-700">{{ session('success') }}</span>
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 relative" role="alert">
+            <div class="flex justify-between items-center">
+                <div>
+                    <strong class="font-bold">Sukses!</strong>
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+                <button type="button" class="text-green-700 hover:text-green-900 focus:outline-none" onclick="this.parentElement.parentElement.style.display='none'">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     @endif
+
+    <!-- Error Message dengan Tombol Close -->
     @if(session('error'))
-        <div class="alert alert-danger mb-4 p-4 rounded-lg bg-red-50 border border-red-200">
-            <div class="flex items-center">
-                <i class="bi bi-exclamation-circle-fill text-red-500 mr-2"></i>
-                <span class="text-red-700">{{ session('error') }}</span>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 relative" role="alert">
+            <div class="flex justify-between items-center">
+                <div>
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+                <button type="button" class="text-red-700 hover:text-red-900 focus:outline-none" onclick="this.parentElement.parentElement.style.display='none'">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     @endif
@@ -422,6 +440,20 @@ document.addEventListener('DOMContentLoaded', function() {
         filterToggleText.textContent = 'Sembunyikan Filter';
         filterToggle.classList.add('bg-blue-50', 'border-blue-200', 'text-blue-700');
     @endif
+
+    // Auto hide success/error messages after 5 seconds
+    setTimeout(function() {
+        const successMessages = document.querySelectorAll('.bg-green-100');
+        const errorMessages = document.querySelectorAll('.bg-red-100');
+        
+        successMessages.forEach(function(message) {
+            message.style.display = 'none';
+        });
+        
+        errorMessages.forEach(function(message) {
+            message.style.display = 'none';
+        });
+    }, 5000);
 });
 </script>
 @endsection
