@@ -5,9 +5,11 @@ use App\Http\Controllers\AdminDinas\ReportController;
 use App\Http\Controllers\AgenController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategorySuperController;
+use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Agency;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -45,6 +47,21 @@ Route::middleware(['auth', 'role:superadmin,admin_dinas'])->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index');
         Route::post('/', [CategoryController::class, 'store'])->name('store');
         Route::delete('/{agencyCategory}', [CategoryController::class, 'destroy'])->name('destroy');
+    });
+    // Agency Routes (CRUD daftar dinas)
+    Route::prefix('admin/agencies')->name('admin.agencies.')->group(function () {
+        Route::get('/', [AgencyController::class, 'index'])->name('index');
+        Route::get('/create', [AgencyController::class, 'create'])->name('create');
+        Route::post('/', [AgencyController::class, 'store'])->name('store');
+        Route::get('/{id}', [AgencyController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [AgencyController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [AgencyController::class, 'update'])->name('update');
+        Route::delete('/{id}', [AgencyController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/toggle-status', [AgencyController::class, 'toggleStatus'])->name('toggle-status');
+        Route::get('/export/pdf', [AgencyController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('/api/list', [AgencyController::class, 'getAgencies'])->name('api.list');
+        Route::get('/{agency}/employees', [AgencyController::class, 'employees'])
+            ->name('employees');
     });
 
     // Superadmin only routes

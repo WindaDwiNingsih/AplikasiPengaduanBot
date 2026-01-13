@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Data Pengaduan - Landscape</title>
+    <title>Laporan Data Pengaduan </title>
     <style>
         @page {
             size: landscape;
@@ -97,7 +97,6 @@
     <div class="header">
         <h1 style="font-size: 16px; font-weight: bold; margin-bottom: 3px;">LAPORAN DATA PENGADUAN MASYARAKAT</h1>
         <p style="color: #6b7280; margin-bottom: 3px; font-size: 9px;">Sistem Pengaduan Masyarakat</p>
-        <p style="color: #6b7280; margin-bottom: 0; font-size: 8px;">Format: Landscape</p>
     </div>
 
     <!-- Table -->

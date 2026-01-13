@@ -17,11 +17,11 @@ class PegawaiController extends Controller
     public function index()
     {
         try {
-            $pegawai = User::where('role', '!=', 'user')
+            $pegawai = User::where('role', '!=', 'superadmin')
                 ->orderBy('name')
                 ->get();
-
-            return view('admin.pegawai.index', compact('pegawai'));
+           
+            return view('admin.pegawai.index', compact('pegawai',));
         } catch (\Exception $e) {
             Log::error('Error fetching pegawai list: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan saat memuat data pegawai.');
@@ -270,4 +270,5 @@ class PegawaiController extends Controller
                 ->with('error', 'Terjadi kesalahan saat reset password.');
         }
     }
+    
 }

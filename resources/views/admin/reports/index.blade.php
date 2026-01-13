@@ -103,7 +103,7 @@
                             </div>
                         </label>
                         <input type="text" name="search" value="{{ request('search') }}" 
-                            placeholder="Cari ID, deskripsi, atau kategori..."
+                            placeholder="Cari deskripsi, atau kategori..."
                             class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150">
                     </div>
 
