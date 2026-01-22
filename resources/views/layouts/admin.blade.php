@@ -44,7 +44,7 @@
                             </a>
                             <!-- Link 2: Laporan Kinerja Agen (Koreksi route name) -->
                             <a href="{{ route('admin.agen-dinas.index') }}" class="block py-2 px-4 text-sm rounded transition duration-200 hover:bg-gray-600 {{ request()->routeIs('reports.agents') ? 'bg-gray-600' : '' }}">
-                                Data User Agen
+                                Data User 
                             </a>
                             <!-- Link 3: Laporan User Pelapor (Index) -->
                              <a href="{{ route('reports.users') }}" class="block py-2 px-4 text-sm rounded transition duration-200 hover:bg-gray-600 {{ request()->routeIs('reports.users') ? 'bg-gray-600' : '' }}">

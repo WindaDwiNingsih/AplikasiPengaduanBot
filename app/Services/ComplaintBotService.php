@@ -458,7 +458,7 @@ class ComplaintBotService
             'text' => "*Foto berhasil diupload!* (" . $photoCount . " foto)\n\n"
                 . "Anda bisa:\n"
                 . "• Upload foto tambahan\n"
-                . "• Selesaikan pengaduan",
+                . "• Ketikan 'Selesai'",
             'parse_mode' => 'Markdown',
             'reply_markup' => json_encode($keyboard)
         ]);
@@ -484,7 +484,7 @@ class ComplaintBotService
                 . "• Klik clip (📎) di input chat\n"
                 . "• Pilih 'Photo' atau 'Gallery'\n"
                 . "• Pilih foto yang ingin diupload\n\n"
-                . "Atau klik 'Selesai Tanpa Foto' untuk lanjut",
+                . "Atau Ketik 'Selesai' untuk lanjut",
             'parse_mode' => 'Markdown',
             'reply_markup' => json_encode($keyboard)
         ]);

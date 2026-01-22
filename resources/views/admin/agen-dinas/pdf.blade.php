@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar User Agen Dinas</title>
+    <title>Daftar User Dinas</title>
     <style>
         body { font-family: 'DejaVu Sans', sans-serif; }
         .header { text-align: center; margin-bottom: 20px; }
@@ -18,7 +18,7 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">DAFTAR AGEN DINAS</h1>
+        <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">DAFTAR DINAS KOTA BANJARBARU</h1>
         <p style="color: #6b7280; margin-bottom: 10px;">Sistem Pengaduan Masyarakat</p>
         <hr style="border: 1px solid #e5e7eb; margin-bottom: 20px;">
     </div>
@@ -30,7 +30,7 @@
                 <th>No</th>
                 <th>Nama</th>
                 <th>Email</th>
-                <th>Agency</th>
+                <th>Dinas</th>
                 <th>Tanggal Bergabung</th>
             </tr>
         </thead>
@@ -44,7 +44,7 @@
                     @if($agen->agency)
                         <span class="badge badge-success">{{ $agen->agency->name }}</span>
                     @else
-                        <span class="badge badge-secondary">Tidak ada agen</span>
+                        <span class="badge badge-secondary">Tidak ada Dinas</span>
                     @endif
                 </td>
                 <td>{{ $agen->created_at->format('d/m/Y') }}</td>
@@ -55,7 +55,7 @@
 
     <!-- Summary -->
     <div style="margin-top: 20px; padding: 10px; background-color: #f9fafb; border-radius: 6px;">
-        <strong>Total Agen Dinas: {{ $totalAgen }}</strong>
+        <strong>Total Dinas: {{ $totalAgen }}</strong>
     </div>
 
     <!-- Footer -->

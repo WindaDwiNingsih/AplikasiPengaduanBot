@@ -67,33 +67,19 @@
             <div class="mb-5" id="agencyField" style="display: none;">
                 <label for="agency_id" class="block text-sm font-medium text-gray-700 mb-2">Dinas</label>
                 
-                <!-- ✅ TAMBAHKAN: Info penting -->
-                <div class="mb-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-                    <p class="font-medium">💡 Informasi Penting</p>
-                    <p class="text-xs mt-1">Setiap dinas hanya boleh memiliki <strong>satu Admin Dinas</strong>. Dinas yang sudah memiliki Admin ditandai dengan ❌</p>
-                </div>
-                
                 <select id="agency_id" name="agency_id" 
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 @error('agency_id') border-red-500 @enderror">
                     <option value="">-- Pilih Dinas --</option>
                     @if(isset($agencies) && $agencies->count() > 0)
                         @foreach($agencies as $agency)
-                            <option value="{{ $agency->id }}" {{ old('agency_id') == $agency->id ? 'selected' : '' }}
-                                @if($agency->hasAdmin()) disabled @endif>
+                            <option value="{{ $agency->id }}" {{ old('agency_id') == $agency->id ? 'selected' : '' }}>
                                 {{ $agency->name }}
-                                @if($agency->hasAdmin()) ❌ (Sudah memiliki Admin) @endif
                             </option>
                         @endforeach
                     @else
                         <option value="">-- Tidak ada dinas yang tersedia --</option>
-                        <option value="">Semua dinas sudah memiliki Admin Dinas</option>
                     @endif
                 </select>
-                
-                <!-- ✅ TAMBAHKAN: Pesan bantuan -->
-                <p class="text-xs text-gray-500 mt-1">
-                    Hanya dinas yang belum memiliki Admin Dinas yang dapat dipilih
-                </p>
                 
                 @error('agency_id')
                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>

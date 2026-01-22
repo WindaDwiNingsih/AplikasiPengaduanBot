@@ -70,14 +70,6 @@
             <div class="mb-5" id="agencyField" style="{{ $pegawai->role == 'admin_dinas' ? 'display: block;' : 'display: none;' }}">
                 <label for="agency_id" class="block text-sm font-medium text-gray-700 mb-2">Dinas</label>
                 
-                <!-- ✅ TAMBAHKAN: Info jika agency sudah memiliki admin -->
-                @if($pegawai->role == 'admin_dinas' && $pegawai->agency)
-                    <div class="mb-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-                        <p class="font-medium">📌 Saat ini: <strong>{{ $pegawai->agency->name }}</strong></p>
-                        <p class="text-xs mt-1">Jika mengganti dinas, pastikan dinas tujuan belum memiliki Admin Dinas.</p>
-                    </div>
-                @endif
-                
                 <select id="agency_id" name="agency_id" 
                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 @error('agency_id') border-red-500 @enderror"
                         @if($pegawai->role == 'admin_dinas') required @endif>
@@ -85,12 +77,9 @@
                     @if(isset($agencies) && $agencies->count() > 0)
                         @foreach($agencies as $agency)
                             <option value="{{ $agency->id }}" 
-                                @if(old('agency_id', $pegawai->agency_id) == $agency->id) selected @endif
-                                @if($agency->hasAdmin() && $agency->id != $pegawai->agency_id) disabled @endif>
+                                @if(old('agency_id', $pegawai->agency_id) == $agency->id) selected @endif>
                                 {{ $agency->name }}
-                                @if($agency->hasAdmin() && $agency->id != $pegawai->agency_id) 
-                                    ❌ (Sudah memiliki Admin)
-                                @elseif($agency->id == $pegawai->agency_id)
+                                @if($agency->id == $pegawai->agency_id) 
                                     ✅ (Saat ini)
                                 @endif
                             </option>
@@ -100,11 +89,7 @@
                     @endif
                 </select>
                 
-                <!-- ✅ TAMBAHKAN: Pesan bantuan -->
-                <p class="text-xs text-gray-500 mt-1">
-                    Dinas yang sudah memiliki Admin Dinas ditandai dengan ❌
-                </p>
-                
+              
                 @error('agency_id')
                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                 @enderror

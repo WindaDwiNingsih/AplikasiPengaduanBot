@@ -24,7 +24,7 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <h1>DAFTAR DINAS KABUPATEN/KOTA</h1>
+        <h1>DAFTAR DINAS KOTA BANJARBARU</h1>
         <p>Sistem Pengaduan Masyarakat</p>
         <p>Tanggal Cetak: {{ $tanggalCetak }}</p>
         @if($filterStatus)

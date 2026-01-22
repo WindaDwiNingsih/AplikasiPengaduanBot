@@ -28,7 +28,7 @@ class BantuanCommand extends Command
             "**Cara mengecek status:**" . PHP_EOL .
             "Ketik /statusku untuk melihat semua pengaduan yang telah Anda buat." .
             "*Bantuan Lainnya:*\n" .
-            "Hubungi admin: 08123456789";
+            "Hubungi admin: 081256650823";
 
         $this->replyWithMessage([
             'text' => $text,
